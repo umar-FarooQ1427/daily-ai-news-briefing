@@ -1,0 +1,46 @@
+name: Daily AI News Collection and Analysis
+
+on:
+  schedule:
+    # Run daily at 08:00 Pakistan time (03:00 UTC)
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect-and-analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download project code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Collect news
+        run: python news_collector.py
+
+      - name: Analyze news with Gemini AI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: "gemini-2.5-flash"
+        run: python ai_news_analyzer.py
+
+      - name: Save news reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-news-reports
+          path: |
+            news.json
+            daily_briefing.md
+            ai_briefing.md
+          if-no-files-found: warn
+          retention-days: 7

@@ -1,0 +1,9 @@
+{
+  "name": "ai-news-agent",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "python3 app.py",
+    "start": "python3 app.py"
+  }
+}

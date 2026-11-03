@@ -1,0 +1,9 @@
+{
+  "name": "AI News Agent & Analyzer",
+  "description": "Automated technology news collector and AI briefing analyzer covering Cybersecurity, Artificial Intelligence, and Computer Science feeds.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "prompt": "AI News Agent and Analyzer"
+}

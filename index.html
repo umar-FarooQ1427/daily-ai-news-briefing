@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI News Agent & Analyzer</title>
+  <meta name="description" content="Automated technology news collector and AI briefing analyzer covering Cybersecurity, Artificial Intelligence, and Computer Science feeds.">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-success { background: rgba(52, 211, 153, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .badge-warning { background: rgba(251, 191, 36, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .card-value { font-size: 1.25rem; font-weight: 600; color: #fff; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.05); }
+    .actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .tab {
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    pre {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      max-height: 550px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>AI News Agent & Analyzer</h1>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-top: 4px;">
+          Autonomous RSS Collector + Google Gemini Briefing Engine
+        </p>
+      </div>
+      <div id="status-badge">
+        <span class="badge badge-warning">Checking Gemini API...</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Collector Feeds</div>
+        <div class="card-value">5 Sources</div>
+        <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">Cybersecurity, AI, Computer Science</div>
+      </div>
+      <div class="card">
+        <div class="card-title">AI Engine</div>
+        <div class="card-value" id="model-name">gemini-2.5-flash</div>
+        <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">Google GenAI API Integration</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Automation</div>
+        <div class="card-value">GitHub Actions</div>
+        <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">Daily 03:00 UTC (08:00 PKT)</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Pipeline Scripts</div>
+        <div class="card-value">Ready</div>
+        <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">news_collector & ai_news_analyzer</div>
+      </div>
+    </div>
+
+    <div class="actions-bar">
+      <button class="btn" id="btn-collector" onclick="runScript('collector')">Run News Collector</button>
+      <button class="btn btn-secondary" id="btn-analyzer" onclick="runScript('analyzer')">Run AI News Analyzer</button>
+      <button class="btn btn-secondary" onclick="loadReports()">Reload Reports</button>
+      <span id="run-spinner" style="display:none; color: var(--accent); font-size: 0.85rem;">Running script... please wait.</span>
+    </div>
+
+    <div id="output-box" style="display:none; margin-bottom: 24px;">
+      <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Execution Output:</h3>
+      <pre id="output-text"></pre>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('ai-briefing', this)">AI Briefing (ai_briefing.md)</button>
+      <button class="tab" onclick="showTab('daily-briefing', this)">Collected News (daily_briefing.md)</button>
+      <button class="tab" onclick="showTab('json-data', this)">Structured Data (news.json)</button>
+      <button class="tab" onclick="showTab('workflow-config', this)">GitHub Workflow (daily-news.yml)</button>
+    </div>
+
+    <div id="ai-briefing" class="tab-content active">
+      <pre id="content-ai-briefing">Loading ai_briefing.md...</pre>
+    </div>
+
+    <div id="daily-briefing" class="tab-content">
+      <pre id="content-daily-briefing">Loading daily_briefing.md...</pre>
+    </div>
+
+    <div id="json-data" class="tab-content">
+      <pre id="content-json-data">Loading news.json...</pre>
+    </div>
+
+    <div id="workflow-config" class="tab-content">
+      <pre>name: Daily AI News Collection and Analysis
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect-and-analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python news_collector.py
+      - name: Analyze news with Gemini AI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: "gemini-2.5-flash"
+        run: python ai_news_analyzer.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: daily-news-reports
+          path: |
+            news.json
+            daily_briefing.md
+            ai_briefing.md</pre>
+    </div>
+  </div>
+
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    async function checkStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        const badge = document.getElementById('status-badge');
+        const model = document.getElementById('model-name');
+        
+        if (data.gemini_model) {
+          model.textContent = data.gemini_model;
+        }
+
+        if (data.gemini_api_key_configured) {
+          badge.innerHTML = '<span class="badge badge-success">● Gemini API Active</span>';
+        } else {
+          badge.innerHTML = '<span class="badge badge-warning">▲ Set GEMINI_API_KEY</span>';
+        }
+      } catch (e) {
+        console.error('Status check error:', e);
+      }
+    }
+
+    async function loadReports() {
+      try {
+        const res = await fetch('/api/reports');
+        const reports = await res.json();
+
+        document.getElementById('content-ai-briefing').textContent = 
+          reports['ai_briefing.md'] || "# ai_briefing.md has not been generated yet.\n\nRun news_collector.py first, then ai_news_analyzer.py (or click the buttons above).";
+
+        document.getElementById('content-daily-briefing').textContent = 
+          reports['daily_briefing.md'] || "# daily_briefing.md has not been generated yet.\n\nClick 'Run News Collector' above to fetch latest articles.";
+
+        document.getElementById('content-json-data').textContent = 
+          reports['news.json'] || "// news.json will be saved here once collected.";
+      } catch (e) {
+        console.error('Failed to load reports:', e);
+      }
+    }
+
+    async function runScript(type) {
+      const spinner = document.getElementById('run-spinner');
+      const outputBox = document.getElementById('output-box');
+      const outputText = document.getElementById('output-text');
+      const btnCollector = document.getElementById('btn-collector');
+      const btnAnalyzer = document.getElementById('btn-analyzer');
+
+      spinner.style.display = 'inline';
+      btnCollector.disabled = true;
+      btnAnalyzer.disabled = true;
+
+      try {
+        const endpoint = type === 'collector' ? '/api/run-collector' : '/api/run-analyzer';
+        const res = await fetch(endpoint, { method: 'POST' });
+        const data = await res.json();
+        
+        outputBox.style.display = 'block';
+        outputText.textContent = (data.stdout || '') + (data.stderr ? '\nERRORS:\n' + data.stderr : '');
+        if (!outputText.textContent.trim()) {
+          outputText.textContent = data.error || 'Execution finished with no output.';
+        }
+        await loadReports();
+      } catch (e) {
+        outputBox.style.display = 'block';
+        outputText.textContent = 'Request failed: ' + e.message;
+      } finally {
+        spinner.style.display = 'none';
+        btnCollector.disabled = false;
+        btnAnalyzer.disabled = false;
+      }
+    }
+
+    checkStatus();
+    loadReports();
+  </script>
+</body>
+</html>
