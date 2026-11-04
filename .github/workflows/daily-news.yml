@@ -1,9 +1,11 @@
+
 name: Daily AI News Collection and Analysis
 
 on:
   schedule:
     # Run daily at 08:00 Pakistan time (03:00 UTC)
     - cron: "0 3 * * *"
+
   workflow_dispatch:
 
 permissions:
@@ -14,27 +16,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Download project code
       - name: Download project code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
+      # Step 4: Collect news
       - name: Collect news
         run: python news_collector.py
 
+      # Step 5: Verify Gemini API key
+      - name: Verify Gemini API key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -n "$GEMINI_API_KEY" ]; then
+            echo "SUCCESS: Gemini API key is available."
+          else
+            echo "ERROR: Gemini API key is missing."
+            exit 1
+          fi
+
+      # Step 6: Analyze news using Gemini
       - name: Analyze news with Gemini AI
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: "gemini-2.5-flash"
         run: python ai_news_analyzer.py
 
+      # Step 7: Upload generated reports
       - name: Save news reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: daily-news-reports
