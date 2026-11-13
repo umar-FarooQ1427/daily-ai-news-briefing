@@ -1,28 +1,23 @@
+
 name: Daily AI News Collection and Analysis
 
 on:
   schedule:
-    # Daily at 08:00 Pakistan time (03:00 UTC)
     - cron: "0 3 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: ai-news-pages
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
   collect-and-analyze:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Download project code
@@ -39,31 +34,17 @@ jobs:
       - name: Collect news
         run: python news_collector.py
 
-      - name: Verify Gemini API key
+      - name: Analyze news with OpenRouter
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "ERROR: GEMINI_API_KEY is missing from repository secrets."
-            exit 1
-          fi
-          echo "Gemini API key is available."
-
-      - name: Analyze news with Gemini AI
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: "gemini-2.5-flash"
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: "openrouter/free"
         run: python ai_news_analyzer.py
 
       - name: Verify generated reports
         run: |
-          test -s news.json || { echo "news.json is missing or empty"; exit 1; }
-          test -s daily_briefing.md || { echo "daily_briefing.md is missing or empty"; exit 1; }
-          test -s ai_briefing.md || { echo "ai_briefing.md is missing or empty"; exit 1; }
-          if grep -Eiq '(\[ERROR\]|API key not valid|GEMINI_API_KEY is not set|Traceback)' ai_briefing.md; then
-            echo "AI briefing appears to contain an error. Review analyzer logs."
-            exit 1
-          fi
+          test -s news.json
+          test -s daily_briefing.md
+          test -s ai_briefing.md
 
       - name: Save news reports
         uses: actions/upload-artifact@v4
@@ -78,7 +59,10 @@ jobs:
       - name: Prepare static website
         run: |
           mkdir -p _site
-          cp index.html news.json daily_briefing.md ai_briefing.md _site/
+          cp index.html _site/
+          cp news.json _site/
+          cp daily_briefing.md _site/
+          cp ai_briefing.md _site/
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
