@@ -1,0 +1,13 @@
+
+{
+  "name": "AI News Intelligence",
+  "short_name": "AI News",
+  "description": "Daily cybersecurity, AI and computer science news briefings",
+  "start_url": "/daily-ai-news-briefing/",
+  "scope": "/daily-ai-news-briefing/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "en",
+  "icons": []
+}
