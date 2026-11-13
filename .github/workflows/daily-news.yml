@@ -3,7 +3,10 @@ name: Daily AI News Collection and Analysis
 
 on:
   schedule:
+    # Every day at 08:00 Pakistan time (03:00 UTC)
     - cron: "0 3 * * *"
+
+  # Allow manual runs from GitHub Actions
   workflow_dispatch:
 
 permissions:
@@ -12,41 +15,58 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: ai-news-pages
   cancel-in-progress: false
 
 jobs:
   collect-and-analyze:
+    name: Collect, Analyze and Deploy News
     runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
+      # 1. Download repository
       - name: Download project code
         uses: actions/checkout@v4
 
+      # 2. Install Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
 
+      # 3. Install dependencies
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
-      - name: Collect news
+      # 4. Collect news
+      - name: Collect latest news
         run: python news_collector.py
 
-      - name: Analyze news with OpenRouter
+      # 5. Analyze with OpenRouter
+      - name: Generate OpenRouter AI Briefing
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           OPENROUTER_MODEL: "openrouter/free"
         run: python ai_news_analyzer.py
 
-      - name: Verify generated reports
+      # 6. Verify generated reports
+      - name: Verify generated files
         run: |
           test -s news.json
           test -s daily_briefing.md
           test -s ai_briefing.md
 
-      - name: Save news reports
+          echo "All news reports generated successfully."
+
+      # 7. Save downloadable reports
+      - name: Upload daily news reports
         uses: actions/upload-artifact@v4
         with:
           name: daily-news-reports
@@ -54,25 +74,47 @@ jobs:
             news.json
             daily_briefing.md
             ai_briefing.md
+          if-no-files-found: error
           retention-days: 7
 
+      # 8. Prepare website and PWA
       - name: Prepare static website
         run: |
           mkdir -p _site
+
+          # Dashboard
           cp index.html _site/
+
+          # PWA configuration
+          cp manifest.json _site/
+          cp sw.js _site/
+
+          # Android app icons
+          cp icon-192.png _site/
+          cp icon-512.png _site/
+
+          # Latest generated news
           cp news.json _site/
           cp daily_briefing.md _site/
           cp ai_briefing.md _site/
+
+          # Disable Jekyll processing
           touch _site/.nojekyll
 
-      - name: Configure GitHub Pages
+          echo "Website files prepared:"
+          ls -lah _site/
+
+      # 9. Configure GitHub Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload Pages artifact
+      # 10. Upload website for deployment
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
-      - name: Deploy to GitHub Pages
+      # 11. Deploy website
+      - name: Deploy AI News Intelligence
         id: deployment
         uses: actions/deploy-pages@v4
