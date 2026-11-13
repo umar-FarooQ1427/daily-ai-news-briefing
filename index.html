@@ -1,29 +1,391 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1220"><title>AI News Intelligence | Daily Briefing</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<meta name="description" content="Daily AI-powered cybersecurity, artificial intelligence and computer science news briefings.">
+<link rel="manifest" href="./manifest.json">
+<title>AI News Intelligence | Daily Briefing</title>
+
 <style>
-:root{color-scheme:dark;--bg:#0b1220;--panel:#151f31;--line:#29384e;--text:#f2f6ff;--muted:#9db0ca;--accent:#38bdf8}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1150px;margin:auto;padding:28px 18px 70px}header{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:24px}h1{font-size:clamp(25px,4vw,38px);margin:0}h2{font-size:21px;margin:0 0 14px}p{margin:6px 0}.muted{color:var(--muted)}.tag{background:#11364c;color:#8ee3ff;border:1px solid #25617d;border-radius:30px;padding:5px 12px;font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}.panel,.stat{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:19px}.stat strong{display:block;font-size:25px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}input,select,button{background:#0f1929;border:1px solid #3b4b64;color:var(--text);padding:11px 13px;border-radius:10px;font:inherit}input{flex:1;min-width:180px}button{cursor:pointer}button:hover{border-color:var(--accent)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tabs button.active{background:#15557a;border-color:#38bdf8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:14px}.article{background:#111b2c;border:1px solid var(--line);border-radius:13px;padding:17px}.article h3{font-size:17px;line-height:1.35;margin:9px 0}.article a{color:#9bdeff;text-decoration:none}.article a:hover{text-decoration:underline}.meta{font-size:12px;color:var(--muted)}.empty{padding:25px;border:1px dashed #42536d;border-radius:12px;color:var(--muted)}.report{white-space:pre-wrap;overflow-wrap:anywhere;max-height:550px;overflow:auto;background:#0e1727;border:1px solid var(--line);border-radius:10px;padding:16px;font:13px/1.7 ui-monospace,Consolas,monospace}.section{margin-top:26px}.error{color:#ffb4b4}footer{margin-top:30px;color:var(--muted);font-size:13px}@media(max-width:600px){.stats{grid-template-columns:1fr}main{padding-top:20px}}
+:root{
+  color-scheme:dark;
+  --bg:#0b1220;
+  --panel:#151f31;
+  --line:#29384e;
+  --text:#f2f6ff;
+  --muted:#9db0ca;
+  --accent:#38bdf8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif;
+}
+main{max-width:1150px;margin:auto;padding:28px 18px 70px}
+header{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+h1{font-size:clamp(25px,4vw,38px);margin:0}
+h2{font-size:21px;margin:0 0 14px}
+p{margin:6px 0}
+.muted{color:var(--muted)}
+.tag{
+  background:#11364c;
+  color:#8ee3ff;
+  border:1px solid #25617d;
+  border-radius:30px;
+  padding:5px 12px;
+  font-size:12px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:22px;
+}
+.panel,.stat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:19px;
+}
+.stat strong{display:block;font-size:25px}
+.toolbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+input,select,button{
+  background:#0f1929;
+  border:1px solid #3b4b64;
+  color:var(--text);
+  padding:11px 13px;
+  border-radius:10px;
+  font:inherit;
+}
+input{flex:1;min-width:180px}
+button{cursor:pointer}
+button:hover{border-color:var(--accent)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tabs button.active{
+  background:#15557a;
+  border-color:#38bdf8;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));
+  gap:14px;
+}
+.article{
+  background:#111b2c;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:17px;
+}
+.article h3{font-size:17px;line-height:1.35;margin:9px 0}
+.article a{color:#9bdeff;text-decoration:none}
+.article a:hover{text-decoration:underline}
+.meta{font-size:12px;color:var(--muted)}
+.empty{
+  padding:25px;
+  border:1px dashed #42536d;
+  border-radius:12px;
+  color:var(--muted);
+}
+.report{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  max-height:550px;
+  overflow:auto;
+  background:#0e1727;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:16px;
+  font:13px/1.7 ui-monospace,Consolas,monospace;
+}
+.section{margin-top:26px}
+.error{color:#ffb4b4}
+footer{margin-top:30px;color:var(--muted);font-size:13px}
+@media(max-width:600px){
+  .stats{grid-template-columns:1fr}
+  main{padding-top:20px}
+  .toolbar{flex-direction:column}
+  input,select{width:100%}
+}
 </style>
 </head>
-<body><main>
-<header><div><h1>AI News Intelligence</h1><p class="muted">Daily cybersecurity, artificial intelligence and computer science briefings</p></div><span class="tag" id="status">Loading reports…</span></header>
-<div class="stats"><div class="stat"><span class="muted">Articles</span><strong id="count">—</strong></div><div class="stat"><span class="muted">Categories</span><strong id="categories">—</strong></div><div class="stat"><span class="muted">Latest article</span><strong id="updated" style="font-size:16px">—</strong></div></div>
-<section class="panel"><h2>Latest news</h2><div class="toolbar"><input id="search" type="search" placeholder="Search news titles and descriptions" aria-label="Search news"><select id="category" aria-label="Filter category"><option value="all">All categories</option></select></div><div id="news" class="grid"><div class="empty">Loading news…</div></div></section>
-<section class="section panel"><div class="tabs"><button class="active" data-report="ai_briefing.md">Gemini AI Briefing</button><button data-report="daily_briefing.md">Collected News Report</button></div><div id="report" class="report">Loading AI briefing…</div></section>
-<footer>News generated by GitHub Actions and Gemini AI. Article links open the original publishers. Summaries may contain AI errors; verify important claims at the source.</footer>
-</main><script>
+
+<body>
+<main>
+<header>
+  <div>
+    <h1>AI News Intelligence</h1>
+    <p class="muted">
+      Daily cybersecurity, artificial intelligence and computer science briefings
+    </p>
+  </div>
+  <span class="tag" id="status">Loading reports…</span>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <span class="muted">Articles</span>
+    <strong id="count">—</strong>
+  </div>
+  <div class="stat">
+    <span class="muted">Categories</span>
+    <strong id="categories">—</strong>
+  </div>
+  <div class="stat">
+    <span class="muted">Latest article</span>
+    <strong id="updated" style="font-size:16px">—</strong>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>Latest news</h2>
+  <div class="toolbar">
+    <input id="search" type="search"
+      placeholder="Search news titles and descriptions"
+      aria-label="Search news">
+    <select id="category" aria-label="Filter category">
+      <option value="all">All categories</option>
+    </select>
+  </div>
+  <div id="news" class="grid">
+    <div class="empty">Loading news…</div>
+  </div>
+</section>
+
+<section class="section panel">
+  <div class="tabs">
+    <button class="active" data-report="ai_briefing.md">
+      OpenRouter AI Briefing
+    </button>
+    <button data-report="daily_briefing.md">
+      Collected News Report
+    </button>
+  </div>
+  <div id="report" class="report" aria-live="polite">
+    Loading AI briefing…
+  </div>
+</section>
+
+<footer>
+  News collected by GitHub Actions and analyzed using OpenRouter AI.
+  Article links open the original publishers.
+  AI summaries may contain errors; verify important claims at the source.
+</footer>
+</main>
+
+<script>
 'use strict';
-const $=id=>document.getElementById(id);let articles=[];
-function text(v){return v==null?'':String(v)}
-function categoryOf(a){return text(a.category||a.topic||a.section||'Uncategorized')}
-function normalize(data){const list=Array.isArray(data)?data:(Array.isArray(data.articles)?data.articles:Array.isArray(data.news)?data.news:[]);return list.filter(x=>x&&typeof x==='object')}
-function safeUrl(value){try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:null}catch{return null}}
-function dateOf(a){return a.published||a.published_at||a.date||a.updated||''}
-function draw(){const q=$('search').value.trim().toLowerCase(),c=$('category').value;const found=articles.filter(a=>(c==='all'||categoryOf(a)===c)&&[a.title,a.description,a.summary,a.source].some(v=>text(v).toLowerCase().includes(q)));const root=$('news');root.replaceChildren();if(!found.length){const el=document.createElement('div');el.className='empty';el.textContent=articles.length?'No matching articles.':'No news data available yet.';root.append(el);return}for(const a of found){const card=document.createElement('article');card.className='article';const meta=document.createElement('div');meta.className='meta';meta.textContent=[categoryOf(a),text(a.source),text(dateOf(a))].filter(Boolean).join(' · ');const h=document.createElement('h3');const url=safeUrl(a.link||a.url);if(url){const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=text(a.title)||'Read article';h.append(link)}else h.textContent=text(a.title)||'Untitled article';const p=document.createElement('p');p.className='muted';p.textContent=text(a.description||a.summary).replace(/<[^>]*>/g,'').slice(0,260);card.append(meta,h,p);root.append(card)}}
-async function getFile(name){const response=await fetch('./'+name+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error(name+' unavailable (HTTP '+response.status+')');return response}
-async function loadNews(){try{const data=await(await getFile('news.json')).json();articles=normalize(data);$('count').textContent=articles.length;const cats=[...new Set(articles.map(categoryOf))].sort();$('categories').textContent=cats.length;for(const c of cats){const option=document.createElement('option');option.value=c;option.textContent=c;$('category').append(option)}const dates=articles.map(a=>new Date(dateOf(a))).filter(d=>!isNaN(d));$('updated').textContent=dates.length?new Date(Math.max(...dates)).toLocaleDateString():'Not provided';$('status').textContent='Reports available';draw()}catch(e){$('status').textContent='News data unavailable';$('news').replaceChildren();const el=document.createElement('div');el.className='empty error';el.textContent='Unable to load news.json. The next GitHub Actions Pages deployment must publish the generated reports. '+e.message;$('news').append(el)}}
-async function loadReport(name){$('report').textContent='Loading '+name+'…';try{$('report').textContent=await(await getFile(name)).text()}catch(e){$('report').textContent='Unable to load '+name+'. Check the GitHub Actions Pages deployment. '+e.message}}
-$('search').addEventListener('input',draw);$('category').addEventListener('change',draw);document.querySelectorAll('[data-report]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-report]').forEach(x=>x.classList.toggle('active',x===b));loadReport(b.dataset.report)}));loadNews();loadReport('ai_briefing.md');
-</script></body></html>
+
+const $ = id => document.getElementById(id);
+let articles = [];
+
+function text(v){
+  return v == null ? '' : String(v);
+}
+
+function categoryOf(a){
+  return text(a.category || a.topic || a.section || 'Uncategorized');
+}
+
+function normalize(data){
+  const list = Array.isArray(data)
+    ? data
+    : Array.isArray(data.articles)
+      ? data.articles
+      : Array.isArray(data.news)
+        ? data.news
+        : [];
+
+  return list.filter(x => x && typeof x === 'object');
+}
+
+function safeUrl(value){
+  try{
+    const u = new URL(value);
+    return ['http:','https:'].includes(u.protocol) ? u.href : null;
+  }catch{
+    return null;
+  }
+}
+
+function dateOf(a){
+  return a.published || a.published_at || a.date || a.updated || '';
+}
+
+function draw(){
+  const q = $('search').value.trim().toLowerCase();
+  const c = $('category').value;
+
+  const found = articles.filter(a =>
+    (c === 'all' || categoryOf(a) === c) &&
+    [a.title,a.description,a.summary,a.source]
+      .some(v => text(v).toLowerCase().includes(q))
+  );
+
+  const root = $('news');
+  root.replaceChildren();
+
+  if(!found.length){
+    const el = document.createElement('div');
+    el.className = 'empty';
+    el.textContent = articles.length
+      ? 'No matching articles.'
+      : 'No news data available yet.';
+    root.append(el);
+    return;
+  }
+
+  for(const a of found){
+    const card = document.createElement('article');
+    card.className = 'article';
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = [
+      categoryOf(a),
+      text(a.source),
+      text(dateOf(a))
+    ].filter(Boolean).join(' · ');
+
+    const h = document.createElement('h3');
+    const url = safeUrl(a.link || a.url);
+
+    if(url){
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = text(a.title) || 'Read article';
+      h.append(link);
+    }else{
+      h.textContent = text(a.title) || 'Untitled article';
+    }
+
+    const p = document.createElement('p');
+    p.className = 'muted';
+    p.textContent = text(a.description || a.summary)
+      .replace(/<[^>]*>/g,'')
+      .slice(0,260);
+
+    card.append(meta,h,p);
+    root.append(card);
+  }
+}
+
+async function getFile(name){
+  const response = await fetch(
+    './' + name + '?v=' + Date.now(),
+    {cache:'no-store'}
+  );
+
+  if(!response.ok){
+    throw new Error(name + ' unavailable (HTTP ' + response.status + ')');
+  }
+
+  return response;
+}
+
+async function loadNews(){
+  try{
+    const data = await (await getFile('news.json')).json();
+    articles = normalize(data);
+
+    $('count').textContent = articles.length;
+
+    const cats = [...new Set(articles.map(categoryOf))].sort();
+    $('categories').textContent = cats.length;
+
+    const categorySelect = $('category');
+    categorySelect.replaceChildren();
+
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All categories';
+    categorySelect.append(allOption);
+
+    for(const c of cats){
+      const option = document.createElement('option');
+      option.value = c;
+      option.textContent = c;
+      categorySelect.append(option);
+    }
+
+    const dates = articles
+      .map(a => new Date(dateOf(a)))
+      .filter(d => !isNaN(d));
+
+    $('updated').textContent = dates.length
+      ? new Date(Math.max(...dates)).toLocaleDateString()
+      : 'Not provided';
+
+    $('status').textContent = 'Reports available';
+    draw();
+
+  }catch(e){
+    $('status').textContent = 'News data unavailable';
+    $('news').replaceChildren();
+
+    const el = document.createElement('div');
+    el.className = 'empty error';
+    el.textContent =
+      'Unable to load news.json. Check the GitHub Actions Pages deployment. ' +
+      e.message;
+
+    $('news').append(el);
+  }
+}
+
+async function loadReport(name){
+  $('report').textContent = 'Loading ' + name + '…';
+
+  try{
+    $('report').textContent = await (await getFile(name)).text();
+  }catch(e){
+    $('report').textContent =
+      'Unable to load ' + name +
+      '. Check the GitHub Actions Pages deployment. ' + e.message;
+  }
+}
+
+$('search').addEventListener('input',draw);
+$('category').addEventListener('change',draw);
+
+document.querySelectorAll('[data-report]').forEach(b =>
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-report]').forEach(x =>
+      x.classList.toggle('active',x === b)
+    );
+    loadReport(b.dataset.report);
+  })
+);
+
+loadNews();
+loadReport('ai_briefing.md');
+
+// Register the PWA service worker when sw.js is available.
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js')
+      .then(()=>console.log('Service worker registered'))
+      .catch(error=>console.warn('Service worker unavailable:',error));
+  });
+}
+</script>
+</body>
+</html>
